@@ -25,6 +25,7 @@ module Whatsapi
 
 			@login_status = Whatsapi::Constants::DISCONNECTED_STATUS
 			@writer = Whatsapi::BinTreeWriter.new()
+			@reader = Whatsapi::BinTreeReader.new()
 		end
 
 		# Opens a socket connection to 
@@ -38,6 +39,13 @@ module Whatsapi
 		def login password
 			@password = password
 			get_challenge_data
+
+
+			@writer.reset_key!
+			@reader.reset_key!
+
+			# $resource = static::WHATSAPP_DEVICE . '-' . static::WHATSAPP_VER . '-' . static::PORT;
+			resource = "#{Whatsapi::Constants::WHATSAPP_DEVICE}-#{Whatsapi::Constants::WHATSAPP_VER}-#{Whatsapi::Constants::PORT}"
 		end
 
 		private 
