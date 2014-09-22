@@ -1,6 +1,5 @@
 require 'spec_helper'
 
-
 describe Whatsapi::Constants do
 	it 'Uses the correct constants' do
 

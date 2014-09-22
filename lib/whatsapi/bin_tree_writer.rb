@@ -29,6 +29,39 @@ module Whatsapi
 			@output = ""
 		end
 
+		def write_attributes attributes
+			attributes.keys.each do |key|
+				write_string key
+				write_string attributes[key]
+			end
+		end
+
+		def write_string tag
+			int_val = -1
+			sub_dict = false
+
+			
+			# $intVal = -1;
+   #      $subdict = false;
+   #      if(TokenMap::TryGetToken($tag, $subdict, $intVal))
+   #      {
+   #          if($subdict)
+   #          {
+   #              $this->writeToken(236);
+   #          }
+   #          $this->writeToken($intVal);
+   #          return;
+   #      }
+   #      $index = strpos($tag, '@');
+   #      if ($index) {
+   #          $server = substr($tag, $index + 1);
+   #          $user = substr($tag, 0, $index);
+   #          $this->writeJid($user, $server);
+   #      } else {
+   #          $this->writeBytes($tag);
+   #      }
+		end
+
 		def write_list_start count
 			if count == 0
 				@output += "\x00";

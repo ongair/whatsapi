@@ -9,6 +9,7 @@ module Whatsapi
 	autoload :BinTreeWriter, 'whatsapi/bin_tree_writer'
 	autoload :BinTreeReader, 'whatsapi/bin_tree_reader'
 	autoload :BinTree, 'whatsapi/bin_tree'
+	autoload :TokenMap, 'whatsapi/token_map'
 end
 
 Whatsapi.configure do |c|
