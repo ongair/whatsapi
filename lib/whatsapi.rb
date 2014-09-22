@@ -1,5 +1,5 @@
 require "whatsapi/version"
 
 module Whatsapi
-  # Your code goes here...
+  autoload :Constants, 'whatsapi/constants'
 end

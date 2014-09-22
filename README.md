@@ -1,13 +1,13 @@
 # Whatsapi
 
-TODO: Write a gem description
+Ruby Interface to WhatsApp messenger
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'whatsapi'
+	gem 'whatsapi'
 ```
 
 And then execute:
@@ -20,7 +20,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+TODO: Coming soong
 
 ## Contributing
 
