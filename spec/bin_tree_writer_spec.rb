@@ -9,6 +9,7 @@ describe Whatsapi::BinTreeWriter do
 		it { expect(subject.output).to eql("") }
 		it { expect(subject.write_int8(1)).to eql("\u0001") }
 		it { expect(subject.write_int16(1)).to eql("\u0000\u0001") }
+		it { expect(subject.write_int24(1)).to eql("\u0000\u0000\u0001") }
 	end
 
 	describe "Write list start" do
