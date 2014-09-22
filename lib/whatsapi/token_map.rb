@@ -395,12 +395,20 @@ module Whatsapi
 			"filehash"
 		]
 
-		def self.try_get_token(tag, sub_dict, int_val)
+		def self.try_get_token(tag, sub_dict, token)
 			index = PRIMARY_STRINGS.index(tag)
 			if index
-				return true
+				return true, sub_dict, index
 			end
 
+			# if we don't get the main string look in the secondary strings
+			# $foo = array_search($string, self::$secondaryStrings);
+			index = SECONDARY_STRINGS.index(tag)
+			if index
+				return true, true, index
+			end
+
+			return false, false, nil
 		end
 	end
 end
