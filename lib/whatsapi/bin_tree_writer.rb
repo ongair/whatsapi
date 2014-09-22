@@ -1,10 +1,9 @@
 require "whatsapi/version"
+require 'whatsapi/bin_tree'
 module Whatsapi
-	class BinTreeWriter
-		attr_accessor :key, :output
+	class BinTreeWriter < BinTree
+		attr_accessor :output
 
-		def reset_key!
-			@key = nil
-		end
+		
 	end
 end
