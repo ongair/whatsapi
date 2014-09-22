@@ -395,7 +395,12 @@ module Whatsapi
 			"filehash"
 		]
 
-		def self.try_get_token(tag, sub_dict, token)
+		# Checks for the tag in the primary array
+		# if it is present we return true, false and the index
+		# if it is not present we first check the secondary strings
+		# if it is present we return true, true and the index
+		# if it is absent in all we return false, false and nil
+		def self.try_get_token(tag, sub_dict=false)
 			index = PRIMARY_STRINGS.index(tag)
 			if index
 				return true, sub_dict, index
@@ -409,6 +414,30 @@ module Whatsapi
 			end
 
 			return false, false, nil
+		end
+
+		def self.get_token(index, sub_dict)
+			if !sub_dict && index >= 236 && index < (236 + SECONDARY_STRINGS.length)
+				sub_dict = true
+			end
+			token_map = []
+			
+			if sub_dict
+				token_map = SECONDARY_STRINGS
+			else
+				token_map = PRIMARY_STRINGS
+			end
+
+			if index < 0 or index > token_map.length
+				return nil
+			end
+
+			tag = token_map[index]
+			if tag.nil?
+				raise Exception.new('Invalid token/length in GetToken')
+			end
+
+			return tag, sub_dict
 		end
 	end
 end
