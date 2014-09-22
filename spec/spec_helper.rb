@@ -14,3 +14,6 @@ RSpec.configure do |config|
 end
 
 
+Whatsapi.configure do |config|
+	config.challenge_file_path = 'challenge.dat'
+end

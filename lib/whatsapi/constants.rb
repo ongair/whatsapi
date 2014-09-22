@@ -14,6 +14,8 @@ module Whatsapi
     # The timeout for the connection with the WhatsApp servers.
     TIMEOUT_SEC = 2
 
+    TIMEOUT_USEC = 0
+
     # Whatsapp host
     WHATSAPP_HOST = 'c.whatsapp.net'
 
@@ -40,5 +42,8 @@ module Whatsapi
 
     # User Agent
     WHATSAPP_USER_AGENT = 'WhatsApp/2.11.339 Android/4.3 Device/GalaxyS3'
+
+    # Challenge file name
+    CHALLENGE_FILE_NAME = 'nextChallenge.dat'
   end
 end

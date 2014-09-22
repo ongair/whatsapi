@@ -5,7 +5,7 @@ require 'socket'
 module Whatsapi
 	class Client
 
-		attr_accessor :phone_number, :identity, :name, :login_status, :socket
+		attr_accessor :phone_number, :identity, :name, :login_status, :socket, :writer, :challenge_data
 
 		# Initialize the WhatsApp client
 		def initialize(phone_number, identity, name)
@@ -24,17 +24,29 @@ module Whatsapi
 			end			
 
 			@login_status = Whatsapi::Constants::DISCONNECTED_STATUS
+			@writer = Whatsapi::BinTreeWriter.new()
 		end
 
 		# Opens a socket connection to 
-		# whatsapp on the configured location and
-		# port
+		# whatsapp on the configured location and post
+		# TODO: Timeouts?
+		# 
 		def connect
-			@socket = TCPSocket.new(Whatsapi::Constants::WHATSAPP_HOST, Whatsapi::Constants::PORT)
-			
+			@socket = TCPSocket.new(Whatsapi::Constants::WHATSAPP_HOST, Whatsapi::Constants::PORT)			
+		end
+
+		def login password
+			@password = password
+			get_challenge_data
 		end
 
 		private 
+
+		# The challenge data file should be configurable
+		# as its not always going to be in the same place
+		def get_challenge_data
+			@challenge_data = IO.read(Whatsapi.config.challenge_file_path)
+		end
 
 		def blank? val
 			(val.nil? or val.empty?)

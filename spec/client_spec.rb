@@ -52,5 +52,14 @@ describe Whatsapi::Client do
 			it { expect(client.socket.nil?).to be false }
 		end
 
+		describe 'Looking up the challenge data file' do
+			client = Whatsapi::Client.new('254705866565', nil, 'Sprout')
+			client.connect
+			client.login '1234567890'
+
+			it { expect(client.writer.nil?).to be_false }
+			it { expect(client.challenge_data.nil?).to be false }
+		end
+
 	end	
 end
