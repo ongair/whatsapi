@@ -1,41 +1,44 @@
 require "whatsapi/version"
 module Whatsapi
 
-	class Constants
-		# Describes the connection status with the WhatsApp server.
-		CONNECTED_STATUS = 'connected' 
+  class Constants
+	# Describes the connection status with the WhatsApp server.
+	CONNECTED_STATUS = 'connected' 
 
-		# Describes the connection status with the WhatsApp server.
-		DISCONNECTED_STATUS = 'disconnected'
+	# Describes the connection status with the WhatsApp server.
+	DISCONNECTED_STATUS = 'disconnected'
 
-        # Port
-        PORT = 433
+    # Port
+    PORT = 443
 
-        # The timeout for the connection with the WhatsApp servers.
-        TIMEOUT_SEC = 2
+    # The timeout for the connection with the WhatsApp servers.
+    TIMEOUT_SEC = 2
 
-        # The check credentials host.        
-        WHATSAPP_CHECK_HOST = 'v.whatsapp.net/v2/exist'
+    # Whatsapp host
+    WHATSAPP_HOST = 'c.whatsapp.net'
 
-        # The check credentials host.
-        WHATSAPP_GROUP_SERVER = 'g.us'
+    # The check credentials host.        
+    WHATSAPP_CHECK_HOST = 'v.whatsapp.net/v2/exist'
 
-        # Request host
-        WHATSAPP_REQUEST_HOST = 'v.whatsapp.net/v2/code'
+    # The check credentials host.
+    WHATSAPP_GROUP_SERVER = 'g.us'
 
-        # Whatsapp server
-        WHATSAPP_SERVER = 's.whatsapp.net'
+    # Request host
+    WHATSAPP_REQUEST_HOST = 'v.whatsapp.net/v2/code'
 
-        # The upload host
-        WHATSAPP_UPLOAD_HOST = 'https://mms.whatsapp.net/client/iphone/upload.php'
+    # Whatsapp server
+    WHATSAPP_SERVER = 's.whatsapp.net'
 
-        # Device Name
-        WHATSAPP_DEVICE = 'Android'
+    # The upload host
+    WHATSAPP_UPLOAD_HOST = 'https://mms.whatsapp.net/client/iphone/upload.php'
 
-        # Version
-        WHATSAPP_VER = '2.11.399'
+    # Device Name
+    WHATSAPP_DEVICE = 'Android'
 
-        # User Agent
-        WHATSAPP_USER_AGENT = 'WhatsApp/2.11.339 Android/4.3 Device/GalaxyS3'
-	end
+    # Version
+    WHATSAPP_VER = '2.11.399'
+
+    # User Agent
+    WHATSAPP_USER_AGENT = 'WhatsApp/2.11.339 Android/4.3 Device/GalaxyS3'
+  end
 end

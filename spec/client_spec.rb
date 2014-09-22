@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require 'socket'
 
 describe Whatsapi::Client do
 	subject { 
@@ -34,5 +34,23 @@ describe Whatsapi::Client do
 
 			it { expect(subject.identity).to eql('a262eb2b404bc3f15144c6c4ae6ebc45fac98eba') }
 		end
+	end
+
+	describe 'Authentication' do
+
+		describe 'Authentication status is disconnected before login is called' do
+			subject{ Whatsapi::Client.new('254705866565', nil, 'Sprout') }
+
+			it { expect(subject.login_status).to eql(Whatsapi::Constants::DISCONNECTED_STATUS) }
+		end
+
+		describe 'Conection to the WhatsApp server' do
+			
+			client = Whatsapi::Client.new('254705866565', nil, 'Sprout')
+			client.connect
+			
+			it { expect(client.socket.nil?).to be false }
+		end
+
 	end	
 end

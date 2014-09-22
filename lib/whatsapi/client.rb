@@ -1,11 +1,13 @@
 require 'digest/sha1'
 require 'uri'
+require 'socket'
 
 module Whatsapi
 	class Client
 
-		attr_accessor :phone_number, :identity, :name
+		attr_accessor :phone_number, :identity, :name, :login_status, :socket
 
+		# Initialize the WhatsApp client
 		def initialize(phone_number, identity, name)
 			
 			raise ArgumentError.new('name must be provided') if blank?(name)
@@ -20,6 +22,16 @@ module Whatsapi
 			else
 				@identity = create_identity
 			end			
+
+			@login_status = Whatsapi::Constants::DISCONNECTED_STATUS
+		end
+
+		# Opens a socket connection to 
+		# whatsapp on the configured location and
+		# port
+		def connect
+			@socket = TCPSocket.new(Whatsapi::Constants::WHATSAPP_HOST, Whatsapi::Constants::PORT)
+			
 		end
 
 		private 

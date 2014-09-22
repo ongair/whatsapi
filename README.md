@@ -20,7 +20,12 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Coming soong
+	### Create a client using the phone number and password
+
+	```
+		require 'whatsapi'
+
+	```
 
 ## Contributing
 
