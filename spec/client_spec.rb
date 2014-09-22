@@ -12,4 +12,19 @@ describe Whatsapi::Client do
 	it { expect(subject.phone_number).to eql('254705866565') }
 	it { expect(subject.identity).to eql('a262eb2b404bc3f15144c6c4ae6ebc45fac98eba') }
 	it { expect(subject.name).to eql('Sprout') }
+
+	describe 'Validation rules' do
+		it 'Throws an error if no name is provided' do
+			expect { Whatsapi::Client.new('254705866565', nil, nil) }.to raise_error(ArgumentError, 'name must be provided')
+			expect { Whatsapi::Client.new('254705866565', nil, "") }.to raise_error(ArgumentError, 'name must be provided')
+		end
+
+		it 'Throws an error is no phone number is provided' do
+			expect { Whatsapi::Client.new(nil, nil, "Sprout") }.to raise_error(ArgumentError, 'phone_number must be provided')
+		end
+	end
+
+	describe 'A valid identifier must always be provided' do
+		subject { Whatsapi::Client.new('254705866565', nil, 'Sprout') }
+	end
 end
