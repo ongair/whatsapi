@@ -24,6 +24,9 @@ Or install it yourself as:
 
 	```
 		require 'whatsapi'
+		client = WhatsApi::Client.new(phone_number, identity, nickname)
+		client.connect
+		client.login password
 
 	```
 
