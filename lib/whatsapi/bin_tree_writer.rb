@@ -27,8 +27,26 @@ module Whatsapi
 			result
 		end
 
-		def flush_buffer
+		def flush_buffer encrypt=true
+			size = @output.length
+			data = @output
+
+			
+			if !@key.nil? && encrypt
+				bsize = get_int24(size)
+
+				# encrypt
+				data = @key.encode_message(data, size, 0, size)
+				len = data.length
+
+				bsize[0] = ((8 << 4) | ((len & 16711680) >> 16)).chr(Encoding::UTF_8)
+				bsize[1] = ((len & 65280) >> 8).chr(Encoding::UTF_8)
+				bsize[2] = (len & 255).chr(Encoding::UTF_8)
+				size = parse_int24(bsize)				
+			end
+			result = write_int24(size) + data
 			@output = ""
+			result
 		end
 
 		def write_attributes attributes
@@ -116,6 +134,20 @@ module Whatsapi
 
 		def clear_output
 			@output = ""
+		end
+
+		def get_int24 length
+			result = ((length & 0xf0000) >> 16).chr(Encoding::UTF_8)
+			result += ((length & 0xff00) >> 8).chr(Encoding::UTF_8)
+			result += (length & 0xff).chr(Encoding::UTF_8)
+			return result
+		end
+
+		def parse_int24 data
+	  		result = data[0,1].ord << 16
+	  		result |= data[1,1].ord << 8
+	  		result |= data[2,1].ord << 0
+	  		result
 		end
 	end
 end

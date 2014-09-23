@@ -40,15 +40,17 @@ module Whatsapi
 			@password = password
 			get_challenge_data
 
-
-			@writer.reset_key!
-			@reader.reset_key!
-
-			# $resource = static::WHATSAPP_DEVICE . '-' . static::WHATSAPP_VER . '-' . static::PORT;
-			resource = "#{Whatsapi::Constants::WHATSAPP_DEVICE}-#{Whatsapi::Constants::WHATSAPP_VER}-#{Whatsapi::Constants::PORT}"
+			do_login			
 		end
 
 		private 
+
+		def do_login
+			@writer.reset_key!
+			@reader.reset_key!
+
+			resource = "#{Whatsapi::Constants::WHATSAPP_DEVICE}-#{Whatsapi::Constants::WHATSAPP_VER}-#{Whatsapi::Constants::PORT}"
+		end
 
 		# The challenge data file should be configurable
 		# as its not always going to be in the same place
