@@ -49,30 +49,22 @@ module Whatsapi
 			end
 			idx = tag.index('@')
 			if idx
+				server = tag[idx+1..-1]
+				user = tag[0, idx]
+				write_jid(user, server)
 			else
 				write_bytes tag
 			end
+		end
 
-			
-			# $intVal = -1;
-   #      $subdict = false;
-   #      if(TokenMap::TryGetToken($tag, $subdict, $intVal))
-   #      {
-   #          if($subdict)
-   #          {
-   #              $this->writeToken(236);
-   #          }
-   #          $this->writeToken($intVal);
-   #          return;
-   #      }
-   #      $index = strpos($tag, '@');
-   #      if ($index) {
-   #          $server = substr($tag, $index + 1);
-   #          $user = substr($tag, 0, $index);
-   #          $this->writeJid($user, $server);
-   #      } else {
-   #          $this->writeBytes($tag);
-   #      }
+		def write_jid user, server			
+			@output += "\xfa"
+			if user.length > 0
+				write_string user
+			else
+				write_token 0
+			end
+			write_string server
 		end
 
 		def write_bytes bytes
