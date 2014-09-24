@@ -2,12 +2,30 @@ module Whatsapi
 	class Rc4
 		def initialize(key, drop)
 			@s = (0..255).to_a
+			j = 0
 			
-			for i in 0..255				
+			(0..255).each do |i|
+				k = key[(i%key.length)].ord
+				j = (j+k+@s[i]) & 255
+				swap(i,j)
 			end
+
+			@i = 0
+			@j = 0
+			cipher((0..drop), 0, drop)
 		end
 
 		def cipher data, offset, length
+			out = data
+			length.times do |n|
+				@i = (@i+1) & 0xff
+				@j = (@j+@s[@i]) & 0xff
+				swap(@i, @j)
+				d = data[offset].ord
+				out[offset] = (d ^ @s[(@s[@i] + @s[@j]) & 0xff])
+				offset = offset+1
+			end
+			return out
 		end
 
 		private
@@ -15,7 +33,7 @@ module Whatsapi
 		def swap i,j
 			c = @s[i]
 			@s[i] = @s[j]
-			@s[j] = @c
+			@s[j] = c
 		end
 	end
 end
