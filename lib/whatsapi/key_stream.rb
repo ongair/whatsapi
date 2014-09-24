@@ -3,6 +3,9 @@ module Whatsapi
 	class KeyStream
 		AUTH_METHOD = "WAUTH-2"
 		DROP = 768
+		@rc4
+	    @seq
+	    @mac_key
 
 		def initialize(key, mac_key)
 			@rc4 = Rc4.new(key, DROP)
@@ -45,18 +48,19 @@ module Whatsapi
 
 		private
 
-			def self.compute_mac
-				#         $hmac = hash_init("sha1", HASH_HMAC, $this->macKey);
-				#         hash_update($hmac, substr($buffer, $offset, $length));
-				#         $array = chr($this->seq >> 24)
-				#             . chr($this->seq >> 16)
-				#             . chr($this->seq >> 8)
-				#             . chr($this->seq);
-				#         hash_update($hmac, $array);
-				#         $this->seq++;
-				#         return hash_final($hmac, true);
-				#     }
-				
+			def self.compute_mac buffer, offset, length
+				# hmac = HMAC::SHA1.new(@mac_key)
+				# hmac.update(buffer[offset, length])
+				array = (@seq >> 24).chr() + (@seq >> 16).chr() + (@seq >> 8).chr() + @seq.chr()
+				# hmac.update(array)
+
+				data = buffer[offset, length] + array
+				digest = OpenSSL::Digest.new('sha1')
+				hmac = OpenSSL::HMAC.digest(digest, @mac_key, data)
+
+				@seq += 1
+
+				hmac
 			end
 	end
 end
