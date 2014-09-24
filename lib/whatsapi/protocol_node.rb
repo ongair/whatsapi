@@ -1,5 +1,8 @@
 module Whatsapi
 	class ProtocolNode
+
+		# ignore the isCli() function. 
+		# lets always assume the response to that is false
 	end
 end
 
