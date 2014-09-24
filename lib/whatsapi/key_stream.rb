@@ -1,3 +1,4 @@
+require 'openssl'
 module Whatsapi
 	class KeyStream
 		AUTH_METHOD = "WAUTH-2"
@@ -14,9 +15,49 @@ module Whatsapi
 			nonce += "0"
 			
 			arr.each_with_index do |elem, idx|
-				# nonce[nonce.length -1] = arr2[idx].chr()
+				nonce[nonce.length -1] = arr2[idx].chr()
+				foo = OpenSSL::PKCS5.pbkdf2_hmac_sha1(password, nonce, 2, 20)
+				arr[idx] = foo
 			end
+			arr
 		end
+
+		def decode_message buffer, macOffset, offset, length
+			mac = KeyStream.compute_mac buffer, offset, length
+			4.times do
+				i = 1
+				foo = (buffer[macOffset + i]).ord
+				bar = mac[i].ord
+				if foo != bar
+					raise "MAC mismatch: #{foo != bar}"
+				end
+				i += 1
+			end
+			OpenSSL::Cipher::RC4.new(buffer, offset, length)
+		end
+
+		def encode_message buffer, macOffset, offset, length
+			data = OpenSSL::Cipher::RC4.new(buffer, offset, length)
+			mac = KeyStream.compute_mac date, offset, length
+			str[start, length]
+			data[0, macOffset] + mac[0, 4] + data[macOffset + 4]
+		end
+
+		private
+
+			def self.compute_mac
+				#         $hmac = hash_init("sha1", HASH_HMAC, $this->macKey);
+				#         hash_update($hmac, substr($buffer, $offset, $length));
+				#         $array = chr($this->seq >> 24)
+				#             . chr($this->seq >> 16)
+				#             . chr($this->seq >> 8)
+				#             . chr($this->seq);
+				#         hash_update($hmac, $array);
+				#         $this->seq++;
+				#         return hash_final($hmac, true);
+				#     }
+				
+			end
 	end
 end
 
