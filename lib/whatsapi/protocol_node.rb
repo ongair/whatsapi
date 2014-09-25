@@ -1,8 +1,154 @@
 module Whatsapi
 	class ProtocolNode
+		@tag
+		@attribute_hash
+		@children
+		@data
+		CLI = nil
+
+
+	    def initialize(tag, attributeHash, children, data)
+	        @tag = tag
+	        @attribute_hash = attribute_hash
+	        @children = children
+	        @data = data
+	    end
+
+		def get_data
+			@data
+		end
+
+		def get_tag
+			@tag
+		end
+
+		def get_attributes
+			@attribute_hash
+		end
+
+		def get_children
+			@children
+		end
 
 		# ignore the isCli() function. 
 		# lets always assume the response to that is false
+		def is_cli
+			false
+		end
+
+		def node_string indent="", is_child=false
+			lt = "<"
+			gt = ">"
+			nl = "\n"
+
+			if !is_cli
+				lt = "&lt;"
+				gt = "&gt;"
+				nl = "<br />"
+				indent.gsub(" ", "&nbsp;")
+			end
+
+			ret = indent + lt + @tag
+
+			if !@attribute_hash.nil?
+				@attribute_hash.each do |key, value|
+					ret += " " + key + "=\"" + value + "\""
+				end
+			end
+
+			ret += gt
+
+			if @data.length > 0
+				if @data.length <= 1024
+					# message
+					ret += @data
+				else
+					# raw data
+					ret += " " + @data.length + " byte data"
+				end
+			end
+
+			if @children
+				ret += nl
+				foo = []
+				@children.each do |child|
+					# $foo[] = $child->nodeString($indent . "  ", true);
+					foo = child.node_string(indent + " ", true)
+				end
+				ret += foo.join(nl)
+				ret += nl + indent
+			end
+
+			ret += lt + "/" + @tag + gt
+
+			if !is_child
+				ret += nl
+				if !is_cli
+					ret += nl
+				end
+			end
+			ret
+		end
+
+		def self.get_attribute attribute
+			ret = ""
+			if !@attribute_hash[attribute].nil?
+				ret = @attribute_hash[attribute]
+			end
+			ret
+		end
+
+		def node_id_contains needle
+			!ProtocolNode.get_attribute("id").nil?
+		end
+
+		def get_child tag
+			ret = nil
+			if @children
+				if tag.is_a?(Integer)
+					if !@children[tag].nil?
+						return @children[tag]
+					else
+						return nil
+					end
+				end
+				@children.each do |child|
+					if child.tag == tag
+						return child
+					end
+					ret = child.get_child(tag)
+					if ret
+						return ret
+					end
+				end
+			end
+			nil
+		end
+
+		def has_child tag
+			!ProtocolNode.get_child(tag).nil?
+		end
+
+		def refresh_times offset=0
+			if !@attribute_hash["id"].nil?
+				id = @attribute_hash["id"]
+				parts = id.split("-")
+				parts[0] = Time.now.to_i + offset.seconds
+				@attribute_hash["id"] parts.join("-")
+			end
+			if !@attribute_hash["t"].nil?
+				@attribute_hash["t"] = Time.now.to_i
+			end
+		end
+
+		def to_string
+			readable_node = {
+				"tag" => @tag,
+				"attribute_hash" => @attribute_hash,
+				"children" => @children,
+				"data" => @data
+			}
+		end
 	end
 end
 
