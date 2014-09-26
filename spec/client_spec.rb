@@ -52,14 +52,37 @@ describe Whatsapi::Client do
 			it { expect(client.socket.nil?).to be false }
 		end
 
-		describe 'Looking up the challenge data file' do
-			client = Whatsapi::Client.new('254705866565', nil, 'Sprout')
-			client.connect
-			client.login '1234567890'
+		# describe 'Looking up the challenge data file' do
+		# 	client = Whatsapi::Client.new('254705866565', nil, 'Sprout')
+		# 	client.connect
+		# 	client.login '1234567890'
 
-			it { expect(client.writer.nil?).to be_false }
-			it { expect(client.challenge_data.nil?).to be false }
+		# 	it { expect(client.writer.nil?).to be false }
+		# 	it { expect(client.challenge_data.nil?).to be false }
+		# end
+
+		describe "Logging into WhatsApp" do
+			let(:client) { Whatsapi::Client.new('254705866565', nil, 'Sprout') }
+
+			before(:each) do
+				allow(Whatsapi::BinTreeReader).to receive(:reset_key!)
+				allow(Whatsapi::BinTreeWriter).to receive(:reset_key!)				
+				# allow(Whatsapi::BinTreeWriter).to receive(:start_stream)
+			end
+
+			context 'login' do
+				it 'should reset both reader and writer' do									
+
+					expect(client.reader).to receive(:reset_key!)
+					expect(client.writer).to receive(:reset_key!)
+					client.login '12345'															
+				end
+
+				it 'should start the stream' do					
+					# expect(client.writer).to receive(:start_stream).with(Whatsapi::Constants::WHATSAPP_SERVER, "#{Whatsapi::Constants::WHATSAPP_DEVICE}-#{Whatsapi::Constants::WHATSAPP_VER}-#{Whatsapi::Constants::PORT}")
+					client.login '12345'
+				end
+			end
 		end
-
 	end	
 end

@@ -5,7 +5,7 @@ require 'socket'
 module Whatsapi
 	class Client
 
-		attr_accessor :phone_number, :identity, :name, :login_status, :socket, :writer, :challenge_data
+		attr_accessor :phone_number, :identity, :name, :login_status, :socket, :reader, :writer, :challenge_data
 
 		# Initialize the WhatsApp client
 		def initialize(phone_number, identity, name)
@@ -33,7 +33,7 @@ module Whatsapi
 		# TODO: Timeouts?
 		# 
 		def connect
-			@socket = TCPSocket.new(Whatsapi::Constants::WHATSAPP_HOST, Whatsapi::Constants::PORT)			
+			@socket ||= TCPSocket.new(Whatsapi::Constants::WHATSAPP_HOST, Whatsapi::Constants::PORT)			
 		end
 
 		def login password
@@ -50,6 +50,7 @@ module Whatsapi
 			@reader.reset_key!
 
 			resource = "#{Whatsapi::Constants::WHATSAPP_DEVICE}-#{Whatsapi::Constants::WHATSAPP_VER}-#{Whatsapi::Constants::PORT}"
+			# @writer.start_stream(Whatsapi::Constants::WHATSAPP_SERVER, resource)
 		end
 
 		# The challenge data file should be configurable

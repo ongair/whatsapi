@@ -1,3 +1,4 @@
+# encoding: utf-8
 require "whatsapi/version"
 require 'whatsapi/bin_tree'
 require 'whatsapi/token_map'
@@ -59,7 +60,7 @@ module Whatsapi
 		def write_string tag			
 			found, main, index = TokenMap.try_get_token(tag, false)
 			if found
-				if !main
+				if main
 					write_token(236)
 				end
 				write_token(index)
@@ -108,7 +109,7 @@ module Whatsapi
 		end
 
 		def write_token token
-			if token < 0xf5
+			if token < 0xf5				
 				@output += token.chr(Encoding::UTF_8)
 			elsif token <= 0x1f4
 				@output += "\xfe" + (token - 0xf5).chr(Encoding::UTF_8)

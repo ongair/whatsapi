@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'spec_helper'
 require 'socket'
 
@@ -14,6 +15,8 @@ describe Whatsapi::BinTreeWriter do
 	end
 
 	describe "Write list start" do
+
+		let(:resource) { "#{Whatsapi::Constants::WHATSAPP_DEVICE}-#{Whatsapi::Constants::WHATSAPP_VER}-#{Whatsapi::Constants::PORT}" }		
 
 		it "Writes the start of the list correctly" do
 			writer = Whatsapi::BinTreeWriter.new()			
@@ -35,7 +38,13 @@ describe Whatsapi::BinTreeWriter do
 			writer.write_list_start(270)
 			
 			expect(writer.output).to eql("\xf9" + writer.write_int16(270))
+		end
 
+		it "Should start a stream correctly" do
+			writer = Whatsapi::BinTreeWriter.new()			
+			
+			result = writer.start_stream(Whatsapi::Constants::WHATSAPP_SERVER, resource)
+			# expect(result).to eql("WA?¤?Android-2.11.399-4")
 		end
 	end
 end
