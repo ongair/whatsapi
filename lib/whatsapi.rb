@@ -3,6 +3,8 @@ require "active_support"
 
 module Whatsapi
 	include ActiveSupport::Configurable
+
+	config_accessor :logger
 	
 	autoload :Constants, 'whatsapi/constants'
 	autoload :Client, 'whatsapi/client'

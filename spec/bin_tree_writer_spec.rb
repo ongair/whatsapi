@@ -43,8 +43,8 @@ describe Whatsapi::BinTreeWriter do
 		it "Should start a stream correctly" do
 			writer = Whatsapi::BinTreeWriter.new()			
 			
-			result = writer.start_stream(Whatsapi::Constants::WHATSAPP_SERVER, resource)
-			# expect(result).to eql("WA?¤?Android-2.11.399-4")
+			# result = writer.start_stream(Whatsapi::Constants::WHATSAPP_SERVER, resource)
+			
 		end
 	end
 end

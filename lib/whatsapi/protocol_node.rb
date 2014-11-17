@@ -1,39 +1,26 @@
 module Whatsapi
 	class ProtocolNode
+
+		attr_accessor :data, :tag, :attributes, :children
+
 		@tag
-		@attribute_hash
+		@attributes
 		@children
 		@data
-		CLI = nil
 
-
-	    def initialize(tag, attributeHash, children, data)
+	    def initialize(tag, attributes, children, data)
 	        @tag = tag
-	        @attribute_hash = attribute_hash
+	        @attributes = attributes
 	        @children = children
 	        @data = data
 	    end
 
-		def get_data
-			@data
-		end
-
-		def get_tag
-			@tag
-		end
-
-		def get_attributes
-			@attribute_hash
-		end
-
-		def get_children
-			@children
-		end
+		
 
 		# ignore the isCli() function. 
 		# lets always assume the response to that is false
 		def is_cli
-			false
+			true
 		end
 
 		def node_string indent="", is_child=false
@@ -134,7 +121,7 @@ module Whatsapi
 				id = @attribute_hash["id"]
 				parts = id.split("-")
 				parts[0] = Time.now.to_i + offset.seconds
-				@attribute_hash["id"] parts.join("-")
+				@attribute_hash["id"] = parts.join("-")
 			end
 			if !@attribute_hash["t"].nil?
 				@attribute_hash["t"] = Time.now.to_i

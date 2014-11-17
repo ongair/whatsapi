@@ -1,7 +1,8 @@
 # encoding: utf-8
-require "whatsapi/version"
+require 'whatsapi/version'
 require 'whatsapi/bin_tree'
 require 'whatsapi/token_map'
+require 'whatsapi/protocol_node'
 
 module Whatsapi
 	class BinTreeWriter < BinTree
@@ -40,14 +41,19 @@ module Whatsapi
 				data = @key.encode_message(data, size, 0, size)
 				len = data.length
 
-				bsize[0] = ((8 << 4) | ((len & 16711680) >> 16)).chr(Encoding::UTF_8)
-				bsize[1] = ((len & 65280) >> 8).chr(Encoding::UTF_8)
-				bsize[2] = (len & 255).chr(Encoding::UTF_8)
+				bsize[0] = ((8 << 4) | ((len & 16711680) >> 16)).chr
+				bsize[1] = ((len & 65280) >> 8).chr
+				bsize[2] = (len & 255).chr
 				size = parse_int24(bsize)				
 			end
 			result = write_int24(size) + data
 			@output = ""
 			result
+		end
+
+		def create_features_node
+			parent = ProtocolNode.new("stream:features", nil, nil, nil)
+			parent
 		end
 
 		def write_attributes attributes
@@ -102,7 +108,7 @@ module Whatsapi
 			if count == 0
 				@output += "\x00";
 			elsif count < 256
-				@output += "\xf8" + count.chr(Encoding::UTF_8)
+				@output += "\xf8" + count.chr
 			else
 				@output += "\xf9" + write_int16(count)
 			end
@@ -110,14 +116,14 @@ module Whatsapi
 
 		def write_token token
 			if token < 0xf5				
-				@output += token.chr(Encoding::UTF_8)
+				@output += token.chr
 			elsif token <= 0x1f4
-				@output += "\xfe" + (token - 0xf5).chr(Encoding::UTF_8)
+				@output += "\xfe" + (token - 0xf5).chr
 			end
 		end
 
 		def write_int8 int
-			int.chr(Encoding::UTF_8)
+			int.chr
 		end
 
 		def write_int16 int

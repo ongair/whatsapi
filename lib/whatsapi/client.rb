@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'digest/sha1'
 require 'uri'
 require 'socket'
@@ -50,7 +51,7 @@ module Whatsapi
 			@reader.reset_key!
 
 			resource = "#{Whatsapi::Constants::WHATSAPP_DEVICE}-#{Whatsapi::Constants::WHATSAPP_VER}-#{Whatsapi::Constants::PORT}"
-			# @writer.start_stream(Whatsapi::Constants::WHATSAPP_SERVER, resource)
+			@writer.start_stream(Whatsapi::Constants::WHATSAPP_SERVER, resource)
 		end
 
 		# The challenge data file should be configurable
